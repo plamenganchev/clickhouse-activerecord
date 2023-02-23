@@ -41,28 +41,28 @@ namespace :clickhouse do
   namespace :structure do
     desc 'Load database structure'
     task load: [:load_config, 'db:check_protected_environments'] do
-      ClickhouseActiverecord::Tasks.new(ActiveRecord::Base.configurations["#{Rails.env}_clickhouse"]).structure_load("#{Rails.root}/db/clickhouse_structure.sql")
+      ClickhouseActiverecord::Tasks.new(ActiveRecord::Base.configurations.configs_for(env_name: "#{Rails.env}_clickhouse")[0] in lib/tasks/clickhouse.rake).structure_load("#{Rails.root}/db/clickhouse_structure.sql")
     end
 
     desc 'Dump database structure'
     task dump: [:load_config, 'db:check_protected_environments'] do
-      ClickhouseActiverecord::Tasks.new(ActiveRecord::Base.configurations["#{Rails.env}_clickhouse"]).structure_dump("#{Rails.root}/db/clickhouse_structure.sql")
+      ClickhouseActiverecord::Tasks.new(ActiveRecord::Base.configurations.configs_for(env_name: "#{Rails.env}_clickhouse")[0] in lib/tasks/clickhouse.rake).structure_dump("#{Rails.root}/db/clickhouse_structure.sql")
     end
   end
 
   desc 'Creates the database from DATABASE_URL or config/database.yml'
   task create: [:load_config] do
-    ActiveRecord::Tasks::DatabaseTasks.create(ActiveRecord::Base.configurations["#{Rails.env}_clickhouse"])
+    ActiveRecord::Tasks::DatabaseTasks.create(ActiveRecord::Base.configurations.configs_for(env_name: "#{Rails.env}_clickhouse")[0] in lib/tasks/clickhouse.rake)
   end
 
   desc 'Drops the database from DATABASE_URL or config/database.yml'
   task drop: [:load_config, 'db:check_protected_environments'] do
-    ActiveRecord::Tasks::DatabaseTasks.drop(ActiveRecord::Base.configurations["#{Rails.env}_clickhouse"])
+    ActiveRecord::Tasks::DatabaseTasks.drop(ActiveRecord::Base.configurations.configs_for(env_name: "#{Rails.env}_clickhouse")[0] in lib/tasks/clickhouse.rake)
   end
 
   desc 'Empty the database from DATABASE_URL or config/database.yml'
   task purge: [:load_config, 'db:check_protected_environments'] do
-    ActiveRecord::Tasks::DatabaseTasks.purge(ActiveRecord::Base.configurations["#{Rails.env}_clickhouse"])
+    ActiveRecord::Tasks::DatabaseTasks.purge(ActiveRecord::Base.configurations.configs_for(env_name: "#{Rails.env}_clickhouse")[0] in lib/tasks/clickhouse.rake)
   end
 
   # desc 'Resets your database using your migrations for the current environment'
